@@ -5,7 +5,7 @@ import random
 import forest
 
 import dotdot
-from learners.nn import NNSet
+from learners.nn_set import NNSet
 
 
 random.seed(0)

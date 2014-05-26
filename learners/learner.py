@@ -79,7 +79,7 @@ class Learner(object):
                 if self.cfg.m_unifomize:
                     m_signal = tools.uniformize_signal(m_signal, self.m_channels)
 
-                self._update(m_signal, s_signal)
+                self._update(m_signal, s_signal, uuid=uuid)
 
 
     def inv_request(self, request):

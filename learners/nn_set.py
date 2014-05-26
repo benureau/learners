@@ -7,9 +7,15 @@ class NNSet(object):
     """Hold observations an provide nearest neighbors facilities"""
 
     def __init__(self):
+        self.uuids = set()
         self.shape = None
 
-    def add(self, x, y=None):
+    def add(self, x, y=None, uuid=None):
+        if uuid is not None:
+            if uuid in self.uuids:
+                return
+            self.uuids.add(uuid)
+
         obs = [x] if y is None else [x, y]
 
         if self.shape is None:
