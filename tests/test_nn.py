@@ -18,8 +18,9 @@ class TestReuse(unittest.TestCase):
             nnset.add([x_i, x_i])
 
         for x_i in range(10):
-            dists, vs = nnset.nn_x([x_i, x_i+0.5], k=1)
-            self.assertEqual(list(vs[0]), [x_i, x_i])
+            dists, idxs = nnset.nn_x([x_i, x_i+0.5], k=1)
+            nn_x = list(nnset.xs[idxs[0]])
+            self.assertEqual(nn_x, [x_i, x_i])
 
     def test_nn_xy(self):
         nnset = NNSet()
@@ -27,8 +28,9 @@ class TestReuse(unittest.TestCase):
             nnset.add([x_i, x_i], [x_i*2])
 
         for x_i in range(10):
-            dists, vs = nnset.nn_y([2*x_i+0.1], k=1)
-            self.assertEqual(list(vs[0]), [2*x_i])
+            dists, idxs = nnset.nn_y([2*x_i+0.1], k=1)
+            nn_y = list(nnset.ys[idxs[0]])
+            self.assertEqual(nn_y, [2*x_i])
 
 
 if __name__ == '__main__':

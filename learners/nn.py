@@ -26,6 +26,16 @@ class NNSet(object):
             self._data[i].append(np.array(obs_i))
         self._nn_ready = [False]*len(self.shape)
 
+
+    @property
+    def xs(self):
+        return self._data[0]
+
+    @property
+    def ys(self):
+        return self._data[1]
+
+
     def nn(self, x, k=1):
         return self.nn_x(x, k=k)
 
@@ -43,8 +53,7 @@ class NNSet(object):
         """
         self._update_tree(side)
         dists, idxes = self._nn_tree[side].kneighbors(v, n_neighbors = k)
-        vs = [self._data[side][i] for i in idxes[0]]
-        return dists[0], vs
+        return dists[0], idxes[0]
 
     def _update_tree(self, side):
         """Build the NNTree for the observed data"""
