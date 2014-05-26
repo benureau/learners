@@ -29,6 +29,8 @@ class Learner(object):
         return class_(cfg, **kwargs)
 
     def __init__(self, cfg):
+        if isinstance(cfg, dict):
+            cfg = forest.Tree(cfg)
         self.cfg = cfg
         self.cfg._update(defcfg, overwrite=False)
         self.s_channels = cfg.s_channels
@@ -76,10 +78,8 @@ class Learner(object):
                 # uniformize the motor signal if enabled
                 if self.cfg.m_unifomize:
                     m_signal = tools.uniformize_signal(m_signal, self.m_channels)
-                    observation = copy.copy(observation) # shallow copy
-                    observation['order'] = m_signal
 
-                self._update(observation)
+                self._update(m_signal, s_signal)
 
 
     def inv_request(self, request):
@@ -103,7 +103,7 @@ class Learner(object):
     def _predict(self, m_signal):
         raise NotImplementedError
 
-    def _update(self, m_signal):
+    def _update(self, m_signal, s_signal):
         raise NotImplementedError
 
 

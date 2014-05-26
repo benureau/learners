@@ -16,5 +16,5 @@ class RandomLearner(learner.Learner):
         """ Return a random motor signal"""
         return collections.OrderedDict((c.name, random.uniform(*c.bounds)) for c in self.m_channels)
 
-    def _update(self, observation):
+    def _update(self, m_signal, s_signal):
         pass
