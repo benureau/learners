@@ -1,5 +1,7 @@
 """A collections of """
 
+import collections
+
 def _load_class(classname):
     """Load a class from a string"""
     module_name, class_name = classname.rsplit('.', 1)
@@ -23,7 +25,7 @@ def restore_signal(uni_signal, channels):
     """ Uniformize a signal between 0.0 and 1.0
         Requires every channel to have bounds, or be discretized.
     """
-    signal = collections.OrderedDict()
+    signal = {}
     for c in channels:
         factor = 1.0
         if c.bounds[0] != c.bounds[1]:
@@ -43,7 +45,7 @@ def to_vector(signal, channels=None):
 def to_signal(vector, channels):
     """Convert a vector to a signal"""
     assert len(vector) == len(channels)
-    return {c_i: v_i for c_i, v_i in zip(channels, vector)}
+    return {c_i.name: v_i for c_i, v_i in zip(channels, vector)}
 
 def clip_signal(signal, channels):
     """Clip a signal to the bounds of the channels"""
