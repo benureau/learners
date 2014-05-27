@@ -37,6 +37,7 @@ def restore_signal(uni_signal, channels):
 def to_vector(signal, channels=None):
     """Convert a signal to a vector"""
     if channels is None:
+        # we need consistent ordering
         assert isinstance(signal, collections.OrderedDict)
         return tuple(signal.values())
     else:
