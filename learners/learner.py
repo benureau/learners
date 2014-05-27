@@ -86,7 +86,7 @@ class Learner(object):
         s_signal   = request['goal']
         m_channels = request['m_channels']
 
-        if set(m_channels.keys()) == self.m_names:
+        if set(c.name for c in m_channels) == self.m_names:
             return self.infer(s_signal)
 
     def update_request(self, request):
