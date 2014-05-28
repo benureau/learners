@@ -6,6 +6,7 @@ import forest
 import models.learner
 
 from .. import learner
+from .. import tools
 
 
 defcfg = learner.Learner.defcfg._copy(deep=True)
@@ -24,7 +25,7 @@ class ModelLearner(learner.Learner):
 
     def __init__(self, cfg):
         super(ModelLearner, self).__init__(cfg)
-        m_bounds = [(0.0, 1.0) if c.bounds[0] != c.bounds[1] else (0.0, 0.0) for c in self.m_channels]
+        m_bounds = [c.bounds for c in self.m_channels]
         self.learner = models.learner.Learner(range(-len(self.m_channels), 0), range(len(self.s_channels)),
                                               m_bounds, fwd=self.cfg.models.fwd, inv=self.cfg.models.inv,
                                               **self.cfg.models.kwargs)
@@ -41,7 +42,7 @@ class ModelLearner(learner.Learner):
         m_vector = self.learner.infer_order(s_vector)
         return tools.to_signal(m_vector, self.m_channels)
 
-    def _update(self, m_signal, s_signal):
+    def _update(self, m_signal, s_signal, uuid=None):
         m_vector = tools.to_vector(m_signal, self.m_channels)
         s_vector = tools.to_vector(s_signal, self.s_channels)
         self.learner.add_xy(m_vector, s_vector)

@@ -1,6 +1,7 @@
 """A collections of """
 
 import collections
+import random
 
 def _load_class(classname):
     """Load a class from a string"""
@@ -45,7 +46,7 @@ def to_vector(signal, channels=None):
 
 def to_signal(vector, channels):
     """Convert a vector to a signal"""
-    assert len(vector) == len(channels)
+    assert len(vector) == len(channels), 'the vector length is {}, but there are {} channels'.format(len(vector), len(channels))
     return {c_i.name: v_i for c_i, v_i in zip(channels, vector)}
 
 def clip_signal(signal, channels):
@@ -61,6 +62,14 @@ def clip_signal(signal, channels):
 
 def clip_vector(vector, channels):
     """Clip a signal to the bounds of the channels"""
-    assert len(vector) == len(channels)
+    assert len(vector) == len(channels), 'the vector length is {}, but there are {} channels'.format(len(vector), len(channels))
     return tuple(min(max(v_i, c_i.bounds[0]),
                      c_i.bounds[1]) for v_i, c_i in zip(vector, channels))
+
+def random_signal(channels, bounds=None):
+    if bounds is None:
+        return {c.name: c.fixed if c.fixed is not None else random.uniform(*c.bounds)
+                for c in channels}
+    else:
+        return {c.name: c.fixed if c.fixed is not None else random.uniform(*b)
+                for c, b in zip(channels, bounds)}

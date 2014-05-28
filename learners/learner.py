@@ -32,7 +32,7 @@ class Learner(object):
         if isinstance(cfg, dict):
             cfg = forest.Tree(cfg)
         self.cfg = cfg
-        self.cfg._update(defcfg, overwrite=False)
+        self.cfg._update(self.defcfg, overwrite=False)
         self.s_channels = cfg.s_channels
         self.m_channels = cfg.m_channels
         self.s_names    = set(c.name for c in self.s_channels)
@@ -83,7 +83,7 @@ class Learner(object):
 
 
     def inv_request(self, request):
-        s_signal   = request['goal']
+        s_signal   = request['s_goal']
         m_channels = request['m_channels']
 
         if set(c.name for c in m_channels) == self.m_names:
@@ -91,8 +91,8 @@ class Learner(object):
 
     def update_request(self, request):
         uuid     = request['uuid']
-        m_signal = request['order']
-        s_signal = request['feedback']
+        m_signal = request['m_signal']
+        s_signal = request['s_signal']
 
         self.update(m_signal, s_signal, uuid=uuid)
 
