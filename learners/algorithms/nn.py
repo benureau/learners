@@ -15,14 +15,14 @@ class NNLearner(learner.Learner):
         """Predict the effect of an order"""
         m_v = tool.to_vector(m_signal)
         dists, m_idx = self.nnset.nn_x(m_v, k=1)
-        s_vector = self.nnset.ys[m_idx[0]]
+        s_vector     = self.nnset.ys[m_idx[0]]
         return tools.to_signal(s_vector, self.s_channels)
 
     def _infer(self, s_signal):
         """Infer the motor command to obtain an effect"""
         s_v = tool.to_vector(s_signal)
         dists, s_idx = self.nnset.nn_y(s_v, k=1)
-        m_vector = self.nnset.xs[s_idx[0]]
+        m_vector     = self.nnset.xs[s_idx[0]]
         return tools.to_signal(m_vector, self.m_channels)
 
     def _update(self, m_signal, s_signal, uuid=None):

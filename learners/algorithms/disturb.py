@@ -9,7 +9,7 @@ from . import nn
 
 defcfg = nn.NNLearner.defcfg._copy(deep=True)
 defcfg._describe('m_disturb', instanceof=(numbers.Real, collections.Iterable),
-                 docstring='Maximum distance of disturbance along each dimension. If ')
+                 docstring='Maximum distance of disturbance along each dimension.')
 
 class DisturbLearner(nn.NNLearner):
     """"""
@@ -28,6 +28,9 @@ class DisturbLearner(nn.NNLearner):
 
     def _infer(self, s_signal):
         """Infer the motor command to obtain an effect"""
+        if len(self.nnset) == 0:
+            return None
+
         s_v = tools.to_vector(s_signal, self.s_channels)
         dists, s_idx = self.nnset.nn_y(s_v, k = 1)
         m_nn = self.nnset.xs[s_idx[0]]

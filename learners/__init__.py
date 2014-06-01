@@ -1,3 +1,4 @@
+from .learner import Learner
 from .channels import Channel
 
 from .algorithms.rand         import RandomLearner

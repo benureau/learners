@@ -1,19 +1,13 @@
 from __future__ import absolute_import, division, print_function
 import random
-import collections
-import uuid
 
 import numpy as np
 
 import forest
+import environments as envs
 
 import dotdot
-import environments as envs
 from learners import tools
-
-
-def random_signal(channels):
-    return collections.OrderedDict((c.name, random.uniform(*c.bounds)) for c in channels)
 
 
 class RandomEnv(envs.Environment):
@@ -33,10 +27,8 @@ class RandomEnv(envs.Environment):
     def cfg(self):
         return self._cfg
 
-    def execute(self, m_signal, meta=None):
-        return {'m_signal': m_signal,
-                's_signal': tools.random_signal(self.s_channels),
-                'uuid'    : uuid.uuid4()}
+    def _execute(self, m_signal, meta=None):
+        return tools.random_signal(self.s_channels)
 
 class RandomLinear(RandomEnv):
 
@@ -51,13 +43,10 @@ class RandomLinear(RandomEnv):
         self._cfg.s_channels = self.s_channels
         self._cfg._freeze(True)
 
-    def execute(self, m_signal, meta=None):
+    def _execute(self, m_signal, meta=None):
         m_vector = np.array([[m_signal[c.name] for c in self.m_channels]])
         s_vector = (np.dot(self.m, m_vector.T).T)[0]
-
-        return {'m_signal': m_signal,
-                's_signal': tools.to_signal(s_vector, self.s_channels),
-                'uuid'    : uuid.uuid4()}
+        return tools.to_signal(s_vector, self.s_channels)
 
 
 
@@ -73,12 +62,10 @@ class SimpleEnv(RandomEnv):
         self._cfg.s_channels = self.s_channels
         self._cfg._freeze(True)
 
-    def execute(self, m_signal, meta=None):
+    def _execute(self, m_signal, meta=None):
         m_vector = tools.to_vector(m_signal, self.m_channels)
         s_vector = (m_vector[0] + m_vector[1], m_vector[0]*m_vector[1])
-        return {'m_signal': m_signal,
-                's_signal': tools.to_signal(s_vector, self.s_channels),
-                'uuid'    : uuid.uuid4()}
+        return tools.to_signal(s_vector, self.s_channels)
 
 
 class BoundedRandomEnv(RandomEnv):

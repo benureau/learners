@@ -1,6 +1,7 @@
 from __future__ import absolute_import, division, print_function
 import random
 import collections
+import abc
 
 import forest
 
@@ -21,6 +22,8 @@ defcfg.m_unifomize = False
 
 class Learner(object):
     """"""
+    __metaclass__ = abc.ABCMeta
+
     defcfg = defcfg
 
     @classmethod
@@ -56,6 +59,8 @@ class Learner(object):
         """
         if self.s_names == set(s_signal.keys()):
             m_signal = self._infer(s_signal)
+            if m_signal is None:
+                return None
             if self.cfg.m_unifomize:
                 m_signal = tools.restore_signal(m_signal, self.m_channels)
 
@@ -96,16 +101,19 @@ class Learner(object):
 
         self.update(m_signal, s_signal, uuid=uuid)
 
+    @abc.abstractmethod
+    def _infer(self, s_signal):
+        """Should return a m_signal or None"""
+        return None
 
-    def _infer(self, m_signal):
-        raise NotImplementedError
-
+    @abc.abstractmethod
     def _predict(self, m_signal):
-        raise NotImplementedError
+        """Should return a s_signal or None"""
+        return None
 
+    @abc.abstractmethod
     def _update(self, m_signal, s_signal):
-        raise NotImplementedError
-
+        pass
 
     def __len__(self):
         return len(self.uuids) + self._uuid_offset

@@ -10,6 +10,9 @@ class NNSet(object):
         self.uuids = set()
         self.shape = None
 
+    def __len__(self):
+        return len(self.uuids)
+
     def add(self, x, y=None, uuid=None):
         if uuid is not None:
             if uuid in self.uuids:
