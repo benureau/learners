@@ -1,4 +1,5 @@
 """A collections of """
+from __future__ import absolute_import, division
 
 import importlib
 import collections
@@ -14,13 +15,13 @@ def uniformize_signal(signal, channels):
     """ Uniformize a signal between 0.0 and 1.0
         Requires every channel to have bounds, or be discretized.
     """
-    uni_signal = []
+    uni_signal = {}
     for c in channels:
         factor = 1.0
         if c.bounds[0] != c.bounds[1]:
             assert c.bounds[0] < c.bounds[1]
             factor = c.bounds[1] - c.bounds[0]
-        uni_signal.append((signal[c.name]-c.bounds[0])/factor)
+        uni_signal[c.name] = (signal[c.name]-c.bounds[0])/factor
     return uni_signal
 
 def restore_signal(uni_signal, channels):
