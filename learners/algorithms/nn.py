@@ -4,8 +4,14 @@ from .. import learner
 from .. import nn_set
 from .. import tools
 
+
+defcfg = learner.Learner.defcfg._copy(deep=True)
+defcfg.classname = 'learners.NNLearner'
+
 class NNLearner(learner.Learner):
     """"""
+
+    defcfg = defcfg
 
     def __init__(self, cfg, nnset=None):
         super(NNLearner, self).__init__(cfg)

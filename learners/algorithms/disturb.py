@@ -8,6 +8,7 @@ from . import nn
 
 
 defcfg = nn.NNLearner.defcfg._copy(deep=True)
+defcfg.classname = 'learners.DisturbLearner'
 defcfg._describe('m_disturb', instanceof=(numbers.Real, collections.Iterable),
                  docstring='Maximum distance of disturbance along each dimension.')
 

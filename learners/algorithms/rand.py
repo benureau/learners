@@ -4,8 +4,14 @@ import collections
 
 from .. import learner
 
+
+defcfg = learner.Learner.defcfg._copy(deep=True)
+defcfg.classname = 'learners.RandomLearner'
+
 class RandomLearner(learner.Learner):
     """Random learner. Does not learn much."""
+
+    defcfg = defcfg
 
     def _predict(self, m_signal):
         """ Return a random sensory signal

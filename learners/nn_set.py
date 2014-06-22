@@ -54,7 +54,7 @@ class NNSet(object):
     def nn_y(self, y, k=1):
         return self._nn(1, y, k=k)
 
-    def _nn(self, side, v, k = 1):
+    def _nn(self, side, v, k=1):
         """ Compute the k nearest neighbors of v in the observed data,
             :arg side:  if equal to _DATA_X, search among input data.
                     if equal to _DATA_Y, search among output data.

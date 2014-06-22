@@ -15,9 +15,8 @@ defcfg._describe('s_channels', instanceof=collections.Iterable,
                  docstring='Sensory channels to generate random goal from')
 defcfg._describe('classname', instanceof=collections.Iterable,
                  docstring='The name of the learner class. Only used with the create() class method.')
-defcfg._describe('m_uniformize', instanceof=bool,
-                 docstring='If true, motor signal will be uniformized as a preprocessing step')
-defcfg.m_unifomize = False
+defcfg._describe('m_uniformize', instanceof=bool, default=True,
+                 docstring='If True, motor signal will be uniformized as a preprocessing step')
 
 
 class Learner(object):
@@ -48,7 +47,7 @@ class Learner(object):
             Inherited classes should override `_predict`.
         """
         if self.m_names == set(m_signal.keys()):
-            if self.cfg.m_unifomize:
+            if self.cfg.m_uniformize:
                 m_signal = tools.uniformize_signal(m_signal, self.m_channels)
             return self._predict(m_signal)
 
@@ -61,7 +60,7 @@ class Learner(object):
             m_signal = self._infer(s_signal)
             if m_signal is None:
                 return None
-            if self.cfg.m_unifomize:
+            if self.cfg.m_uniformize:
                 m_signal = tools.restore_signal(m_signal, self.m_channels)
 
             return m_signal
@@ -81,7 +80,7 @@ class Learner(object):
                     self._uuid_offset += 1
 
                 # uniformize the motor signal if enabled
-                if self.cfg.m_unifomize:
+                if self.cfg.m_uniformize:
                     m_signal = tools.uniformize_signal(m_signal, self.m_channels)
 
                 self._update(m_signal, s_signal, uuid=uuid)
