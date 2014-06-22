@@ -9,15 +9,18 @@ class NNSet(object):
     def __init__(self):
         self.uuids = set()
         self.shape = None
+        self._uuid_offset = 0
 
     def __len__(self):
-        return len(self.uuids)
+        return len(self.uuids) + self._uuid_offset
 
     def add(self, x, y=None, uuid=None):
         if uuid is not None:
             if uuid in self.uuids:
                 return
             self.uuids.add(uuid)
+        else:
+            self._uuid_offset += 1
 
         obs = [x] if y is None else [x, y]
 
