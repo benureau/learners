@@ -22,7 +22,7 @@ class TestDisturb(unittest.TestCase):
         cfg = {'m_channels': [ch_x, ch_y],
                's_channels': [ch_a],
                'm_uniformize': True,
-               'm_disturb': 0.1}
+               'm_disturb': 0.01}
 
         learner = DisturbLearner(cfg)
 
