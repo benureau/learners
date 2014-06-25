@@ -5,16 +5,16 @@ import random
 import forest
 
 import dotdot
-from learners.nn_set import NNSet
+from learners import Channel
+from learners import DisturbLearner
+from learners import DisturbTwoStepLearner
 
 
 random.seed(0)
 
 class TestDisturb(unittest.TestCase):
 
-    def test_nn_x(self):
-        from learners import Channel, DisturbLearner
-
+    def _config(self):
         ch_x = Channel('x', [0, 10])
         ch_y = Channel('y', [0, 10])
         ch_a = Channel('a', [0, 100])
@@ -24,8 +24,9 @@ class TestDisturb(unittest.TestCase):
                'm_uniformize': True,
                'm_disturb': 0.01}
 
-        learner = DisturbLearner(cfg)
+        return cfg
 
+    def _learner_check(self, learner):
         learner.update({'x': 5, 'y': 4}, {'a': 9})
         p = learner.predict({'x': 3, 'y': 4})
         self.assertEqual(p, None)
@@ -33,6 +34,17 @@ class TestDisturb(unittest.TestCase):
         e = learner.infer({'a': 3})
         self.assertTrue(4.9 <= e['x'] <= 5.1 and
                         3.9 <= e['y'] <= 4.1)
+
+
+    def test_disturb(self):
+        cfg = self._config()
+        learner = DisturbLearner(cfg)
+        self._learner_check(learner)
+
+    def test_disturb2(self):
+        cfg = self._config()
+        learner = DisturbTwoStepLearner(cfg)
+        self._learner_check(learner)
 
 
 if __name__ == '__main__':

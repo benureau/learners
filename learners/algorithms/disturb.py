@@ -29,9 +29,12 @@ class DisturbLearner(nn.NNLearner):
 
     def _infer(self, s_signal):
         """Infer the motor command to obtain an effect"""
+        return self._disturb(s_signal, self.m_disturb)
+
+    def _disturb(self, s_signal, perturb):
+        """"""
         if len(self.nnset) == 0:
             return None
-
         s_v = tools.to_vector(s_signal, self.s_channels)
         dists, s_idx = self.nnset.nn_y(s_v, k = 1)
         m_nn = self.nnset.xs[s_idx[0]]
