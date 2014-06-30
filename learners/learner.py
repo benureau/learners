@@ -6,6 +6,7 @@ import abc
 import forest
 
 from . import tools
+from .channels import Channel
 
 
 defcfg = forest.Tree()
@@ -37,6 +38,11 @@ class Learner(object):
         self.cfg._update(self.defcfg, overwrite=False)
         self.s_channels = cfg.s_channels
         self.m_channels = cfg.m_channels
+        if self.cfg.m_uniformize:
+            self.uni_m_channels = [Channel(c.name, bounds=(0., 1.), fixed=c.fixed) for c in self.m_channels]
+        else:
+            self.uni_m_channels = self.m_channels
+
         self.s_names    = set(c.name for c in self.s_channels)
         self.m_names    = set(c.name for c in self.m_channels)
         self.uuids = set()

@@ -21,7 +21,7 @@ class DisturbLearner(nn.NNLearner):
 
         self.m_disturb = self.cfg.m_disturb
         if isinstance(self.m_disturb, numbers.Real):
-            self.m_disturb = [self.m_disturb for c in self.m_channels]
+            self.m_disturb = [self.m_disturb for c in self.uni_m_channels]
 
     def _predict(self, data):
         """Predict the effect of an order"""
@@ -40,7 +40,7 @@ class DisturbLearner(nn.NNLearner):
         m_nn = self.nnset.xs[s_idx[0]]
 
         m_disturbed = [v_i + random.uniform(-d_i, d_i) for v_i, d_i in zip(m_nn, self.m_disturb)]
-        m_disturbed = tools.clip_vector(m_disturbed, self.m_channels)
-        m_signal = tools.to_signal(m_disturbed, self.m_channels)
+        m_disturbed = tools.clip_vector(m_disturbed, self.uni_m_channels)
+        m_signal = tools.to_signal(m_disturbed, self.uni_m_channels)
 
         return m_signal
