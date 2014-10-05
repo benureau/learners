@@ -37,10 +37,13 @@ class TestModelWrap(unittest.TestCase):
             dataset = []
 
             for t in range(100):
-                order  = tools.random_signal(env.m_channels)
-                feedback = env.execute(order)
-                learner.update_request(feedback)
-                dataset.append(feedback)
+                m_signal  = tools.random_signal(env.m_channels)
+                feedback = env.execute(m_signal)
+                obs_feedback = {'m_signal': m_signal,
+                                's_signal': feedback['s_signal'],
+                                'uuid'    : feedback['uuid']}
+                learner.update_request(obs_feedback)
+                dataset.append(obs_feedback)
 
             for t in range(1000):
                 feedback = random.choice(dataset)
@@ -66,23 +69,32 @@ class TestModelWrap(unittest.TestCase):
 
         uuids = set()
         for t in range(100):
-            order  = collections.OrderedDict((c.name, random.uniform(*c.bounds)) for c in env.m_channels)
-            feedback = env.execute(order)
+            m_signal  = collections.OrderedDict((c.name, random.uniform(*c.bounds)) for c in env.m_channels)
+            feedback = env.execute(m_signal)
             self.assertTrue(feedback['uuid'] not in uuids)
             uuids.add(feedback['uuid'])
-            learner.update_request(feedback)
+            obs_feedback = {'m_signal': m_signal,
+                            's_signal': feedback['s_signal'],
+                            'uuid'    : feedback['uuid']}
+            learner.update_request(obs_feedback)
             self.assertEqual(len(learner), t+1)
 
 
-        order     = collections.OrderedDict((c.name, random.uniform(*c.bounds)) for c in env.m_channels)
-        feedback1 = env.execute(order)
-        learner.update_request(feedback1)
+        m_signal     = collections.OrderedDict((c.name, random.uniform(*c.bounds)) for c in env.m_channels)
+        feedback1 = env.execute(m_signal)
+        obs_feedback1 = {'m_signal': m_signal,
+                         's_signal': feedback1['s_signal'],
+                         'uuid'    : feedback1['uuid']}
+        learner.update_request(obs_feedback1)
         self.assertEqual(len(learner), 101)
 
-        order     = collections.OrderedDict((c.name, random.uniform(*c.bounds)) for c in env.m_channels)
-        feedback2 = env.execute(order)
-        feedback2['uuid'] = feedback1['uuid']
-        learner.update_request(feedback2)
+        m_signal     = collections.OrderedDict((c.name, random.uniform(*c.bounds)) for c in env.m_channels)
+        feedback2 = env.execute(m_signal)
+        obs_feedback2 = {'m_signal': m_signal,
+                         's_signal': feedback2['s_signal'],
+                         'uuid'    : feedback2['uuid']}
+        obs_feedback2['uuid'] = obs_feedback1['uuid']
+        learner.update_request(obs_feedback2)
         self.assertEqual(len(learner), 101)
 
 if __name__ == '__main__':
