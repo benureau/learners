@@ -92,6 +92,13 @@ class Learner(object):
                 self._update(m_signal, s_signal, uuid=uuid)
 
 
+    def fwd_request(self, request):
+        m_signal   = request['m_signal']
+        s_channels = request['s_channels']
+
+        if set(c.name for c in s_channels) == self.s_names:
+            return self.predict(m_signal)
+
     def inv_request(self, request):
         s_signal   = request['s_goal']
         m_channels = request['m_channels']

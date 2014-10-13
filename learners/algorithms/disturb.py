@@ -39,8 +39,10 @@ class DisturbLearner(nn.NNLearner):
         dists, s_idx = self.nnset.nn_y(s_v, k = 1)
         m_nn = self.nnset.xs[s_idx[0]]
 
-        m_disturbed = [v_i + random.uniform(-d_i, d_i) for v_i, d_i in zip(m_nn, self.m_disturb)]
-        m_disturbed = tools.clip_vector(m_disturbed, self.uni_m_channels)
+        # we draw the perturbation inside legal values, rather than clamp it afterward
+        m_disturbed = [random.uniform(max(v_i - d_i, c_i.bounds[0]),
+                                      min(v_i + d_i, c_i.bounds[1]))
+                       for v_i, d_i, c_i in zip(m_nn, self.m_disturb, self.uni_m_channels)]
         m_signal = tools.to_signal(m_disturbed, self.uni_m_channels)
 
         return m_signal
