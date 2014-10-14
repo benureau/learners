@@ -6,9 +6,11 @@ setup(
     version = "1.0",
     author = "Fabien Benureau",
     author_email = "fabien.benureau@inria.fr",
-    description = ("A collection of simple incremental learning algorithm"),
-    license = "Open Science (see fabien.benureau.com/openscience.html)",
+    url='flowers.inria.fr',
+    download_url='
+    maintainer='Fabien Benureau',
+    description = "A collection of simple incremental forward and inverse model learning algorithms",
+    license = "Open Science License (see fabien.benureau.com/openscience.html)",
     keywords = "learning algorithm",
-    url = "flowers.inria.fr",
     packages=['learners', 'learners.algorithms'],
 )
