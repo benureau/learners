@@ -3,7 +3,11 @@ from __future__ import absolute_import, division, print_function
 import collections
 
 import forest
-import models.learner
+try:
+    model_imported = True
+    import models.learner
+except ImportError:
+    model_imported = False
 
 from .. import learner
 from .. import tools
@@ -25,6 +29,8 @@ class ModelLearner(learner.Learner):
     defcfg = defcfg
 
     def __init__(self, cfg):
+        if not model_imported:
+            print("the 'models' package could not be imported. Install models before using ModelLeaner")
         super(ModelLearner, self).__init__(cfg)
         m_bounds = [c.bounds for c in self.uni_m_channels]
         self.learner = models.learner.Learner(range(-len(self.uni_m_channels), 0), range(len(self.s_channels)),
