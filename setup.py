@@ -3,7 +3,7 @@ from setuptools import setup
 
 setup(
     name = "learners",
-    version = "1.0",
+    version = "1.0.1",
     author = "Fabien Benureau",
     author_email = "fabien.benureau@inria.fr",
     url='flowers.inria.fr',
