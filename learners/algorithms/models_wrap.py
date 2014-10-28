@@ -30,7 +30,8 @@ class ModelLearner(learner.Learner):
 
     def __init__(self, cfg):
         if not model_imported:
-            print("the 'models' package could not be imported. Install models before using ModelLeaner")
+            print("error: The 'models' package could not be imported.",
+                  "       Install models from https://github.com/humm/models before using the ModelLeaner class.", sep='\n')
         super(ModelLearner, self).__init__(cfg)
         m_bounds = [c.bounds for c in self.uni_m_channels]
         self.learner = models.learner.Learner(range(-len(self.uni_m_channels), 0), range(len(self.s_channels)),

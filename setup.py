@@ -13,7 +13,7 @@ setup(
     license = "Open Science License (see fabien.benureau.com/openscience.html)",
     keywords = "learning algorithm",
     packages=['learners', 'learners.algorithms'],
-    install_requires=['forest','numpy'],
+    install_requires=['forest','numpy', 'scipy', 'scikit-learn'],
     dependency_links=[
         "https://github.com/flowersteam/forest/tarball/master#egg=forest-1.0",
     ],

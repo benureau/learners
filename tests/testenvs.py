@@ -36,7 +36,7 @@ class RandomLinear(RandomEnv):
         self.m = np.random.random((s_dim, len(m_bounds)))
 
         self.m_channels = [envs.Channel('m_{}'.format(i), mb_i) for i, mb_i in enumerate(m_bounds)]
-        self.s_channels = [envs.Channel('s_{}'.format(i)) for _ in range(s_dim)]
+        self.s_channels = [envs.Channel('s_{}'.format(i)) for i in range(s_dim)]
 
         self._cfg = forest.Tree()
         self._cfg.m_channels = self.m_channels
