@@ -5,7 +5,7 @@ import random
 import forest
 
 import dotdot
-from learners.nn_set import NNSet
+from learners.nn_set import NNSet, BatchNNSet, BruteForceNNSet
 
 
 random.seed(0)
@@ -32,6 +32,32 @@ class TestReuse(unittest.TestCase):
             nn_y = list(nnset.ys[idxs[0]])
             self.assertEqual(nn_y, [2*x_i])
 
+    def test_incrementalnn(self):
+
+        for i in range(10):
+            implementations = [BruteForceNNSet(), BatchNNSet(), NNSet(poolsize=7)]
+
+
+            innset = BatchNNSet()
+            n = random.randint(1, 5)
+            m = random.randint(1, 5)
+            for j in range(100):
+                x, y = [random.random() for _ in range(n)], [random.random() for _ in range(m)]
+                for imp in implementations:
+                    imp.add(x, y)
+
+                for _ in range(10):
+                    k = min(random.randint(1, 10), j+1)
+                    x, y = [random.random() for _ in range(n)], [random.random() for _ in range(m)]
+                    indexes = []
+                    for imp in implementations:
+                        dists, idxes = imp.nn_x(x, k=k)
+                        indexes.append(idxes)
+                    # for i in range(len(indexes)-1):
+                    #     for a, b in zip(indexes[i], indexes[i+1]):
+                    #         self.assertEqual(a, b.all())
+
+                    self.assertEqual(*indexes)
 
 if __name__ == '__main__':
     unittest.main()

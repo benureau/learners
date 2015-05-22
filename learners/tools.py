@@ -75,3 +75,7 @@ def random_signal(channels, bounds=None):
     else:
         return {c.name: c.fixed if c.fixed is not None else random.uniform(*b)
                 for c, b in zip(channels, bounds)}
+
+def dist_sq(vector1, vector2):
+    assert len(vector1) == len(vector2)
+    return sum((v1_i - v2_i)**2 for v1_i, v2_i in zip(vector1, vector2))
