@@ -37,16 +37,28 @@ class Learner(object):
         self.cfg = cfg
         self.cfg._update(self.defcfg, overwrite=False)
         self.s_channels = cfg.s_channels
-        self.m_channels = cfg.m_channels
+        self._m_channels = cfg.m_channels
         if self.cfg.m_uniformize:
-            self.uni_m_channels = [Channel(c.name, bounds=(0., 1.), fixed=c.fixed) for c in self.m_channels]
+            self._uni_m_channels = [Channel(c.name, bounds=(0., 1.), fixed=c.fixed) for c in self._m_channels]
         else:
-            self.uni_m_channels = self.m_channels
+            self._uni_m_channels = self._m_channels
 
         self.s_names    = set(c.name for c in self.s_channels)
         self.m_names    = set(c.name for c in self.m_channels)
         self.uuids = set()
         self._uuid_offset = 0
+
+    @property
+    def m_channels(self):
+        return self._m_channels
+
+    @m_channels.setter
+    def m_channels(self, channels):
+        """Can only update boundaries"""
+        assert not self.cfg.m_uniformize # Not robust (cfg can be changed). Should be handled even in this case.
+        assert set(c.name for c in channels) == self.m_names
+        self._m_channels = channels
+        self._uni_m_channels = channels
 
     def predict(self, m_signal):
         """ Predict the effect of an order.

@@ -20,7 +20,7 @@ class RandomLearner(learner.Learner):
 
     def _infer(self, s_signal):
         """ Return a random motor signal"""
-        return {c.name: random.uniform(*c.bounds) for c in self.uni_m_channels}
+        return {c.name: random.uniform(*c.bounds) for c in self._uni_m_channels}
 
     def _update(self, m_signal, s_signal, uuid=None):
         pass

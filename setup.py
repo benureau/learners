@@ -17,4 +17,7 @@ setup(
     dependency_links=[
         "https://github.com/flowersteam/forest/tarball/master#egg=forest-1.0",
     ],
+
+    # in order to avoid 'zipimport.ZipImportError: bad local file header'
+    zip_safe=False,
 )
