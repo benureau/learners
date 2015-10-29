@@ -26,6 +26,6 @@ class DisturbClampLearner(disturb.DisturbLearner):
         m_disturbed = [random.uniform(v_i - d_i, v_i + d_i)
                        for v_i, d_i in zip(m_nn, self.m_disturb)]
         m_disturbed = [min(max(v_i, c_i.bounds[0]), c_i.bounds[1])
-                       for v_i, c_i in zip(m_disturbed, self._uni_m_channels)]
+                       for v_i, c_i in zip(m_disturbed, self._m_channels)]
 
-        return tools.to_signal(m_disturbed, self._uni_m_channels)
+        return tools.to_signal(m_disturbed, self._m_channels)

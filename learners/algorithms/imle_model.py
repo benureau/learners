@@ -52,9 +52,9 @@ class ImleLearner(learner.Learner):
 
         res = self.imle.predict_inverse(y, weight=True)
         return tools.to_signal(res['prediction'][np.argmax(res['weight'])],
-                               self._uni_m_channels)
+                               self._m_channels)
 
     def _update(self, m_signal, s_signal, uuid=None):
-        m_v = np.array(tools.to_vector(m_signal, self._uni_m_channels))
+        m_v = np.array(tools.to_vector(m_signal, self._m_channels))
         s_v = np.array(tools.to_vector(s_signal, self.s_channels))
         self.imle.update(m_v, s_v)

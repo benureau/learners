@@ -34,7 +34,7 @@ class WeightedNNLearner(learner.Learner):
         s_v = tool.to_vector(s_signal)
         dists, s_idx = self.nnset.nn_y(s_v, k=self.cfg.s_k)
         m_vector = self.nnset.xs[s_idx[0]]
-        return tools.to_signal(m_vector, self._uni_m_channels)
+        return tools.to_signal(m_vector, self._m_channels)
 
     def _update(self, m_signal, s_signal, uuid=None):
         m_v = tools.to_vector(m_signal)

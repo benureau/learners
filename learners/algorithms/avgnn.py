@@ -31,4 +31,4 @@ class AvgNNLearner(nn.NNLearner):
         dists, s_idx = self.nnset.nn_y(s_v, k=1)
         dists, m_idx = self.nnset.nn_x(self.nnset.xs[s_idx[0]], k=self.cfg.s_k)
         m_vector = np.average([self.nnset.xs[idx_i] for idx_i in m_idx])
-        return tools.to_signal(m_vector, self._uni_m_channels)
+        return tools.to_signal(m_vector, self._m_channels)

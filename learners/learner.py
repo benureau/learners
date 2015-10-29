@@ -1,12 +1,11 @@
 from __future__ import absolute_import, division, print_function
-import random
 import collections
 import abc
+import copy
 
 import forest
 
 from . import tools
-from .channels import Channel
 
 
 defcfg = forest.Tree()
@@ -18,7 +17,8 @@ defcfg._describe('classname', instanceof=collections.Iterable,
                  docstring='The name of the learner class. Only used with the create() class method.')
 defcfg._describe('m_uniformize', instanceof=bool, default=True,
                  docstring='If True, motor signal will be uniformized as a preprocessing step')
-
+defcfg._describe('virtual_m_bounds', instanceof=collections.Iterable, default=(),
+                 docstring='Define more constraining bounds on motor range')
 
 class Learner(object):
     """"""
@@ -36,29 +36,59 @@ class Learner(object):
             cfg = forest.Tree(cfg)
         self.cfg = cfg
         self.cfg._update(self.defcfg, overwrite=False)
-        self.s_channels = cfg.s_channels
-        self._m_channels = cfg.m_channels
-        if self.cfg.m_uniformize:
-            self._uni_m_channels = [Channel(c.name, bounds=(0., 1.), fixed=c.fixed) for c in self._m_channels]
-        else:
-            self._uni_m_channels = self._m_channels
+        self.s_channels         = tuple(cfg.s_channels)
+        self._m_channels_global = tuple(cfg.m_channels)
+        self.m_dim, self.s_dim = len(self.m_channels), len(self.s_channels)
 
         self.s_names    = set(c.name for c in self.s_channels)
         self.m_names    = set(c.name for c in self.m_channels)
         self.uuids = set()
         self._uuid_offset = 0
 
+        # used to artificially restrict the motor range
+        self.m_uniformized        = True # should be self.cfg.m_uniformize, but disturb assumes its True (#FIXME)
+        self._virtual_m_channels  = tuple(copy.deepcopy(self.m_channels))
+        if cfg.virtual_m_bounds is ():
+            self.virtual_m_bounds = tuple(c.bounds for c in self.m_channels)
+        else:
+            self.virtual_m_bounds = cfg.virtual_m_bounds
+
     @property
     def m_channels(self):
-        return self._m_channels
+        return self._m_channels_global
 
-    @m_channels.setter
-    def m_channels(self, channels):
-        """Can only update boundaries"""
-        assert not self.cfg.m_uniformize # Not robust (cfg can be changed). Should be handled even in this case.
+    @property
+    def virtual_m_bounds(self):
+        return self._virtual_m_bounds
+
+    @virtual_m_bounds.setter
+    def virtual_m_bounds(self, bounds):
+        assert len(bounds) == self.m_dim
+        for (b_min, b_max), c in zip(bounds, self.m_channels):
+            assert c.bounds[0] <= b_min <= b_max <= c.bounds[1]
+
+        self._virtual_m_bounds = tuple(bounds)
+        for b, c in zip(bounds, self._virtual_m_channels):
+            c.bounds = b
+        self._m_channels = copy.deepcopy(self._virtual_m_channels)
+
+        if self.m_uniformized:
+            for (b_min, b_max), c_global, c in zip(bounds, self.m_channels, self._m_channels):
+                if not c_global.fixed:
+                    d = c_global.bounds[1]-c_global.bounds[0]
+                    if d > 0:
+                        a = (b_min - c_global.bounds[0])/d
+                        b = (b_max - c_global.bounds[0])/d
+                        c.bounds = (a, b)
+
+    @property
+    def virtual_m_channels(self):
+        return self._virtual_m_channels
+
+    @virtual_m_channels.setter
+    def virtual_m_channels(self, channels):
         assert set(c.name for c in channels) == self.m_names
-        self._m_channels = channels
-        self._uni_m_channels = channels
+        self.virtual_m_bounds = [c.bounds for c in channels]
 
     def predict(self, m_signal):
         """ Predict the effect of an order.
@@ -136,7 +166,7 @@ class Learner(object):
         return None
 
     @abc.abstractmethod
-    def _update(self, m_signal, s_signal):
+    def _update(self, m_signal, s_signal, uuid=None):
         pass
 
     def __len__(self):
