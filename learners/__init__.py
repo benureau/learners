@@ -14,3 +14,9 @@ from .algorithms.pdisturb      import PredictDisturbLearner
 from .algorithms.nn            import NNLearner
 from .algorithms.models_wrap   import ModelLearner
 from .algorithms.imle_model    import ImleLearner
+
+from ._version import get_versions
+__version__ = get_versions()["version"]
+__commit__ = get_versions()["full-revisionid"]
+__dirty__ = get_versions()["dirty"]
+del get_versions
