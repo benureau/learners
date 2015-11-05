@@ -3,7 +3,7 @@ from __future__ import absolute_import, division, print_function
 from . import nn
 
 
-defcfg = learner.Learner.defcfg._copy(deep=True)
+defcfg = learner.Learner.defcfg._deepcopy()
 defcfg.classname = 'learners.AvgNNLearner'
 defcfg._describe('m_k', instanceof=(numbers.Real, collections.Iterable),
                  docstring='Number of neighbors to average from to predict')

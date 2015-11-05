@@ -2,7 +2,7 @@
 from __future__ import absolute_import, division, print_function
 import collections
 
-import forest
+import scicfg
 try:
     model_imported = True
     import models.learner
@@ -13,7 +13,7 @@ from .. import learner
 from .. import tools
 
 
-defcfg = learner.Learner.defcfg._copy(deep=True)
+defcfg = learner.Learner.defcfg._deepcopy()
 defcfg.classname = 'learners.ModelLearner'
 defcfg._describe('models.fwd', instanceof=str,
                  docstring='The name of the forward model to use')

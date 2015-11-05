@@ -16,9 +16,9 @@ setup(
     license      = "Open Science License (see fabien.benureau.com/openscience.html)",
     keywords     = "learning algorithm",
     packages     = ['learners', 'learners.algorithms'],
-    install_requires=['forest','numpy', 'scipy', 'scikit-learn'],
+    install_requires=['scicfg','numpy', 'scipy', 'scikit-learn'],
     dependency_links=[
-        "https://github.com/flowersteam/forest/tarball/master#egg=forest-1.0",
+        "https://github.com/flowersteam/scicfg/tarball/master#egg=scicfg-1.0",
     ],
 
     # in order to avoid 'zipimport.ZipImportError: bad local file header'

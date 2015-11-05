@@ -7,7 +7,7 @@ describe three channels, *x*, *y* and *a*, with bounds `[0, 10]` for the first
 two and `[0, 100]` for *a*.
 
 
-    import forest
+    import scicfg
     from learners import Channel, RandomLearner
     
     ch_x = Channel('x', [0, 10])

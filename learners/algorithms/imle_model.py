@@ -11,7 +11,7 @@ from .. import learner
 from .. import tools
 
 
-defcfg = learner.Learner.defcfg._copy(deep=True)
+defcfg = learner.Learner.defcfg._deepcopy()
 defcfg.classname = 'learners.ImleLearner'
 defcfg._describe('sigma0', instanceof=(numbers.Real), default=1.0/30,
                  docstring='sigma0 parameter for imle')

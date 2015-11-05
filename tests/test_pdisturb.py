@@ -2,7 +2,7 @@ from __future__ import absolute_import, division, print_function
 import unittest
 import random
 
-import forest
+import scicfg
 
 import dotdot
 import learners
@@ -19,7 +19,7 @@ class TestDisturb(unittest.TestCase):
         ch_y = Channel('y', [0, 10])
         ch_a = Channel('a', [0, 100])
 
-        fwd_cfg = learners.ModelLearner.defcfg._copy(deep=True)
+        fwd_cfg = learners.ModelLearner.defcfg._deepcopy()
         fwd_cfg.models.fwd = 'ES-LWLR'
         fwd_cfg.models.inv = 'L-BFGS-B'
 

@@ -5,7 +5,7 @@ import collections
 
 import numpy as np
 
-import forest
+import scicfg
 
 import dotdot
 import learners
@@ -26,7 +26,7 @@ class TestModelWrap(unittest.TestCase):
 
         mbounds = ((23, 34), (-3, -2), (-40, 5))
         env = testenvs.RandomLinear(mbounds, 2)
-        exp_cfg = learners.ModelLearner.defcfg._copy(deep=True)
+        exp_cfg = learners.ModelLearner.defcfg._deepcopy()
         exp_cfg.m_channels = env.m_channels
         exp_cfg.s_channels = env.s_channels
 
@@ -59,7 +59,7 @@ class TestModelWrap(unittest.TestCase):
     def test_uuid(self):
         mbounds = ((23, 34), (-3, -2), (-40, 5))
         env = testenvs.RandomLinear(mbounds, 2)
-        exp_cfg = learners.ModelLearner.defcfg._copy(deep=True)
+        exp_cfg = learners.ModelLearner.defcfg._deepcopy()
         exp_cfg.m_channels = env.m_channels
         exp_cfg.s_channels = env.s_channels
 

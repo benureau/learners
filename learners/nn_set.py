@@ -111,7 +111,7 @@ class BatchNNSet(BruteForceNNSet):
         return tuple(dists[0]), tuple(idxes[0])
 
     def _update_tree(self, side):
-        """Build the NNTree for the observed data"""
+        """Build the NNSciConfig for the observed data"""
         if self.shape is None:
             raise IndexError('no data added to the structure')
         if not self._nn_ready[side]:

@@ -2,7 +2,7 @@ from __future__ import absolute_import, division, print_function
 import unittest
 import random
 
-import forest
+import scicfg
 
 import dotdot
 from learners import tools, Channel

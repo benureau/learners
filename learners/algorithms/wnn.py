@@ -1,12 +1,12 @@
 from __future__ import absolute_import, division, print_function
 
-import forest
+import scicfg
 
 from .. import learner
 from .. import nn
 
 
-defcfg = learner.Learner.defcfg._copy(deep=True)
+defcfg = learner.Learner.defcfg._deepcopy()
 defcfg.classname = 'learners.WeightedNNLearner'
 defcfg._describe('m_k', instanceof=(numbers.Real, collections.Iterable),
                  docstring='Number of neighbors to average from with motor signal')

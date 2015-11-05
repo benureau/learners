@@ -3,7 +3,7 @@ import random
 
 import numpy as np
 
-import forest
+import scicfg
 import environments as envs
 
 import dotdot
@@ -18,7 +18,7 @@ class RandomEnv(envs.Environment):
                            envs.Channel('s_1'),
                            envs.Channel('s_3')]
 
-        self._cfg = forest.Tree()
+        self._cfg = scicfg.SciConfig()
         self._cfg.m_channels = self.m_channels
         self._cfg.s_channels = self.s_channels
         self._cfg._freeze(True)
@@ -38,7 +38,7 @@ class RandomLinear(RandomEnv):
         self.m_channels = [envs.Channel('m_{}'.format(i), mb_i) for i, mb_i in enumerate(m_bounds)]
         self.s_channels = [envs.Channel('s_{}'.format(i)) for i in range(s_dim)]
 
-        self._cfg = forest.Tree()
+        self._cfg = scicfg.SciConfig()
         self._cfg.m_channels = self.m_channels
         self._cfg.s_channels = self.s_channels
         self._cfg._freeze(True)
@@ -57,7 +57,7 @@ class SimpleEnv(RandomEnv):
         self.m_channels = [envs.Channel(i, mb_i) for i, mb_i in enumerate(m_bounds)]
         self.s_channels = [envs.Channel(i) for i in enumerate((2, 3))]
 
-        self._cfg = forest.Tree()
+        self._cfg = scicfg.SciConfig()
         self._cfg.m_channels = self.m_channels
         self._cfg.s_channels = self.s_channels
         self._cfg._freeze(True)

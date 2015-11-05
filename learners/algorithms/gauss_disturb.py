@@ -7,7 +7,7 @@ from .. import tools
 from . import disturb
 
 
-defcfg = disturb.DisturbLearner.defcfg._copy(deep=True)
+defcfg = disturb.DisturbLearner.defcfg._deepcopy()
 defcfg.classname = 'learners.GaussDisturbLearner'
 
 class GaussDisturbLearner(disturb.DisturbLearner):

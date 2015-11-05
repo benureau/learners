@@ -3,12 +3,12 @@ import collections
 import abc
 import copy
 
-import forest
+import scicfg
 
 from . import tools
 
 
-defcfg = forest.Tree()
+defcfg = scicfg.SciConfig()
 defcfg._describe('m_channels', instanceof=collections.Iterable,
                  docstring='Motor channels to generate random order of')
 defcfg._describe('s_channels', instanceof=collections.Iterable,
@@ -33,7 +33,7 @@ class Learner(object):
 
     def __init__(self, cfg):
         if isinstance(cfg, dict):
-            cfg = forest.Tree(cfg)
+            cfg = scicfg.SciConfig(cfg)
         self.cfg = cfg
         self.cfg._update(self.defcfg, overwrite=False)
         self.s_channels         = tuple(cfg.s_channels)

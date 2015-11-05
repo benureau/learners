@@ -11,7 +11,7 @@
 
 # <codecell>
 
-import forest
+import scicfg
 from learners import Channel, RandomLearner
 
 ch_x = Channel('x', [0, 10])

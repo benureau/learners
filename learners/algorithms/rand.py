@@ -5,7 +5,7 @@ import collections
 from .. import learner
 
 
-defcfg = learner.Learner.defcfg._copy(deep=True)
+defcfg = learner.Learner.defcfg._deepcopy()
 defcfg.classname = 'learners.RandomLearner'
 
 class RandomLearner(learner.Learner):

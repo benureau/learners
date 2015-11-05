@@ -5,7 +5,7 @@ from .. import nn_set
 from .. import tools
 
 
-defcfg = learner.Learner.defcfg._copy(deep=True)
+defcfg = learner.Learner.defcfg._deepcopy()
 defcfg.classname = 'learners.NNLearner'
 
 class NNLearner(learner.Learner):
