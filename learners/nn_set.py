@@ -77,7 +77,8 @@ class BruteForceNNSet(object):
             results.append((np.linalg.norm(u-v), i))
         results.sort()
 
-        return tuple(results[i][0] for i in range(k)), tuple(results[i][1] for i in range(k))
+        return (np.array([results[i][0] for i in range(k)]),
+                   tuple([results[i][1] for i in range(k)]))
 
 class BatchNNSet(BruteForceNNSet):
     """Hold observations an provide nearest neighbors facilities"""
@@ -107,8 +108,8 @@ class BatchNNSet(BruteForceNNSet):
             :return:    distance and indexes of found nearest neighbors.
         """
         self._update_tree(side)
-        dists, idxes = self._nn_tree[side].kneighbors(v, n_neighbors = k)
-        return tuple(dists[0]), tuple(idxes[0])
+        dists, idxes = self._nn_tree[side].kneighbors(v, n_neighbors=k)
+        return np.array(dists[0]), tuple(idxes[0])
 
     def _update_tree(self, side):
         """Build the NNSciConfig for the observed data"""
@@ -153,11 +154,11 @@ class NNSet(BatchNNSet):
         self._update_tree(side)
         if self._pool_sizes[side] == 0:
             t_dists, t_idxes = self._nn_tree[side].kneighbors(v, n_neighbors=k)
-            return tuple(t_dists[0]), tuple(t_idxes[0])
+            return np.array(t_dists[0]), tuple(t_idxes[0])
         elif len(self._data[side]) <= self.poolsize:
             offset = len(self._data[side]) - self._pool_sizes[side]
             p_dists, p_idxes = self._pool_tree[side].kneighbors(v, n_neighbors=k)
-            return tuple(p_dists[0]), tuple(p_i + offset for p_i in p_idxes[0])
+            return np.array(p_dists[0]), tuple(p_i + offset for p_i in p_idxes[0])
         else:
             t_dists, t_idxes = self._nn_tree[side].kneighbors(v, n_neighbors=min(k, self._nn_sizes[side]))
             t_dists, t_idxes = t_dists[0], t_idxes[0]
@@ -184,7 +185,7 @@ class NNSet(BatchNNSet):
                     dists.append(t_dists[t_i])
                     idxes.append(t_idxes[t_i])
                     t_i += 1
-            return tuple(dists), tuple(idxes)
+            return np.array(dists), tuple(idxes)
 
     def _update_tree(self, side):
         if self._pool_sizes[side] >= self.poolsize:

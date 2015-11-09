@@ -1,3 +1,4 @@
+.fuse_hidden*
 ark_reuse.py
 *.graffle
 .DS_Store
