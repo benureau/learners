@@ -101,8 +101,11 @@ class LWLRLearner(nn.NNLearner):
 
     ### LWR regression
     def _predict(self, m_signal):
-        xq = tools.to_vector(m_signal, self.m_channels)
+        m_vector = tools.to_vector(m_signal, self.m_channels)
+        s_vector = self._predict_v(m_vector)
+        return tools.to_signal(s_vector, self.s_channels)
 
+    def _predict_v(self, xq):
         dists, index = self.nnset.nn_x(xq, k=self.k)
 
         w = self._weights(dists, self.sigma_sq)
@@ -126,7 +129,7 @@ class LWLRLearner(nn.NNLearner):
         self.mat = np.dot(B, np.dot(W, Y))
         Yq  = np.dot(Xq, self.mat)
 
-        return tools.to_signal(Yq.ravel(), self.s_channels)
+        return Yq.ravel()
 
     def _weights(self, dists, sigma_sq):
         #print('sigma: {}'.format(sigma_sq))
