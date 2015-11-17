@@ -13,7 +13,6 @@ from .algorithms.lwlr           import ESLWLRLearner
 from .algorithms.predict_mutate import PredictMutateNNLearner
 from .algorithms.optimize       import OptimizeLearner
 
-from .algorithms.models_wrap    import ModelLearner
 from .algorithms.imle_model     import ImleLearner
 
 # versioneer
