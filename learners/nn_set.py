@@ -152,6 +152,8 @@ class NNSet(BatchNNSet):
 
     def _nn(self, side, v, k=1):
         self._update_tree(side)
+        k = min(k, len(self))
+
         if self._pool_sizes[side] == 0:
             t_dists, t_idxes = self._nn_tree[side].kneighbors(v, n_neighbors=k)
             return np.array(t_dists[0]), tuple(t_idxes[0])

@@ -10,7 +10,7 @@ from learners.nn_set import NNSet, BatchNNSet, BruteForceNNSet
 
 random.seed(0)
 
-class TestReuse(unittest.TestCase):
+class TestNNSet(unittest.TestCase):
 
     def test_nn_x(self):
         nnset = NNSet()
@@ -36,7 +36,6 @@ class TestReuse(unittest.TestCase):
 
         for i in range(10):
             implementations = [BruteForceNNSet(), BatchNNSet(), NNSet(poolsize=7)]
-
 
             innset = BatchNNSet()
             n = random.randint(1, 5)

@@ -158,36 +158,3 @@ class ESLWLRLearner(LWLRLearner):
     def _weights(self, dists, sigma_sq=None):
         sigma_sq=(dists**2).sum()/len(dists)/2
         return super(ESLWLRLearner, self)._weights(dists, sigma_sq)
-
-# pLWLRForwardModel = None
-# pESLWLRForwardModel = None
-#
-# def enable_cmodels():
-#     global LWLRForwardModel, pLWLRForwardModel
-#     global ESLWLRForwardModel, pESLWLRForwardModel
-#     try:
-#         from cdataset import cLWLRForwardModel
-#         pLWLRForwardModel = LWLRForwardModel # keeping the python version accessible
-#         LWLRForwardModel = cLWLRForwardModel
-#
-#         class cESLWLRForwardModel(cLWLRForwardModel):
-#             """ES-LWLR : LWLR with estimated sigma, on a query basis, as the mean distance.
-#             Based on c implementation.
-#             """
-#             def __init__(self, *args, **kwargs):
-#                 cLWLRForwardModel.__init__(self, *args, **kwargs)
-#                 self.es = True
-#
-#         pESLWLRForwardModel = ESLWLRForwardModel # keeping the python version accessible
-#         ESLWLRForwardModel = cESLWLRForwardModel
-#
-#     except ImportError:
-#         print("warning: cdataset.cLWLRForwardModel import error, defaulting to (slower) python implementation.")
-#
-# def disable_cmodels():
-#     global LWLRForwardModel, ESLWLRForwardModel
-#     LWLRForwardModel = pLWLRForwardModel
-#     ESLWLRForwardModel = pESLWLRForwardModel
-#     print("cmodels disabled")
-#
-# enable_cmodels()
