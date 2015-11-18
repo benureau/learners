@@ -2,7 +2,7 @@ import os
 from setuptools import setup
 
 import versioneer
-VERSION = '1.0.3'
+VERSION = '1.0.4'
 
 setup(
     name         = "learners",
@@ -16,7 +16,7 @@ setup(
     description  = "A collection of simple incremental forward and inverse model learning algorithms",
     license      = "Open Science License (see fabien.benureau.com/openscience.html)",
     keywords     = "learning algorithm",
-    packages     = ['learners', 'learners.algorithms'],
+    packages     = ['learners', 'learners.algorithms', 'learners.operators'],
     install_requires=['scicfg','numpy', 'scipy', 'scikit-learn'],
     # in order to avoid 'zipimport.ZipImportError: bad local file header'
     zip_safe=False,
