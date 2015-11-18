@@ -26,7 +26,7 @@ class MutateNNLearner(nn.NNLearner):
         super(MutateNNLearner, self).__init__(cfg)
 
         op_class = operators.get(self.cfg.operator.name)
-        self._operator = op_class(self.cfg.operator, self.m_channels)
+        self._operator = op_class(self.cfg.operator, self._m_channels)
 
     def _predict(self, m_signal):
         """Predict the effect of an order"""

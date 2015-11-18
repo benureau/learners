@@ -4,6 +4,8 @@ from __future__ import absolute_import, division
 import numpy as np
 import sklearn.neighbors
 
+import warnings
+warnings.filterwarnings('error')
 
 class BruteForceNNSet(object):
     """\
@@ -13,6 +15,7 @@ class BruteForceNNSet(object):
     def __init__(self):
         self.uuids = set()
         self._size = 0
+        self._data       = [[], []]
         self.shape = None
 
     def __len__(self):
@@ -98,7 +101,7 @@ class BatchNNSet(BruteForceNNSet):
         self._check_obs(obs)
 
         for i, obs_i in enumerate(obs):
-            self._data[i].append(np.array(obs_i))
+            self._data[i].append(np.array(obs_i).reshape(1, -1))
         self._nn_ready = [False]*len(self.shape)
 
     def _nn(self, side, v, k=1):
@@ -151,6 +154,11 @@ class NNSet(BatchNNSet):
             self._pool_ready[i] = False
 
     def _nn(self, side, v, k=1):
+        if self._size == 0:
+            return [], []
+
+        v = np.array(v).reshape(1, -1)
+
         self._update_tree(side)
         k = min(k, len(self))
 
@@ -199,6 +207,6 @@ class NNSet(BatchNNSet):
         else:
             if not self._pool_ready[side]:
                 data = self._data[side][-self._pool_sizes[side]:]
-                self._pool_tree[side]  = sklearn.neighbors.NearestNeighbors(algorithm='brute')
+                self._pool_tree[side] = sklearn.neighbors.NearestNeighbors(algorithm='brute')
                 self._pool_tree[side].fit(data)
                 self._pool_ready[side] = True

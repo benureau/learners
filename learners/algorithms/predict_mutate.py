@@ -22,7 +22,7 @@ class PredictMutateNNLearner(mutate_nn.MutateNNLearner):
     def __init__(self, *args, **kwargs):
         super(PredictMutateNNLearner, self).__init__(*args, **kwargs)
 
-        self.cfg.fwd.m_channels = self.m_channels
+        self.cfg.fwd.m_channels = self._m_channels
         self.cfg.fwd.s_channels = self.s_channels
         self.fwd = self.create(self.cfg.fwd)
 

@@ -9,7 +9,7 @@ from . import lwlr
 
 
 defcfg = learner.Learner.defcfg._deepcopy()
-defcfg.classname = 'leaners.OptimizeLearner'
+defcfg.classname = 'learners.OptimizeLearner'
 defcfg._branch('fwd', value=lwlr.ESLWLRLearner.defcfg._deepcopy())
 defcfg._describe('algo', instanceof=str, default='L-BFGS-B')
 defcfg._branch('options', strict=False)
@@ -29,7 +29,7 @@ class OptimizeLearner(learner.Learner):
 
     def __init__(self, cfg):
         super(OptimizeLearner, self).__init__(cfg)
-        self.cfg.fwd.m_channels = self.m_channels
+        self.cfg.fwd.m_channels = self._m_channels
         self.cfg.fwd.s_channels = self.s_channels
         self.cfg.fwd.m_uniformize = self.cfg.m_uniformize
         self.fwd = self.create(self.cfg.fwd)
@@ -37,7 +37,7 @@ class OptimizeLearner(learner.Learner):
             self.nnset = self.fwd.nnset
         except AttributeError:
             self.nnset = nn_set.NNSet()
-        self.bounds = [c.bounds for c in self.m_channels]
+        self.bounds = [c.bounds for c in self._m_channels]
 
     def _update(self, m_signal, s_signal, uuid=None):
         m_v = tools.to_vector(m_signal, self._m_channels)
@@ -57,6 +57,9 @@ class OptimizeLearner(learner.Learner):
         return self.fwd._predict(m_signal)
 
     def _infer(self, s_signal):
+        if len(self.nnset) == 0:
+            return tools.random_signal(self._m_channels)
+
         y_goal = tools.to_vector(s_signal, self.s_channels)
 
         x_guess = self._initialize(y_goal)
@@ -74,7 +77,7 @@ class OptimizeLearner(learner.Learner):
                                       options     = {k:v for k, v in self.cfg.options._items()}
                                      )
 
-        return tools.to_signal(self._enforce_bounds(res.x), self.m_channels)
+        return tools.to_signal(self._enforce_bounds(res.x), self._m_channels)
 
     def _enforce_bounds(self, x):
         """"Enforce the bounds on x if only infinitesimal violations occurs"""

@@ -157,4 +157,6 @@ class ESLWLRLearner(LWLRLearner):
 
     def _weights(self, dists, sigma_sq=None):
         sigma_sq=(dists**2).sum()/len(dists)/2
+        if sigma_sq == 0.0:
+            sigma_sq = 1.0
         return super(ESLWLRLearner, self)._weights(dists, sigma_sq)
