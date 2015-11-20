@@ -2,7 +2,7 @@
 
 A small library for incremental learning of forward and inverse models, compatible with the [`environments`](https://github.com/humm/environments) module.
 
-This code was designed and written in order to conduct scientific experiments. It is probably not fit for any other purpose, and certainly not for production environments. In particular, its maintenance and future depends on the direction of future research. That being said, do not hesitate to submit issues or contact me by mail for questions and comments.
+This code was designed and written to conduct scientific experiments. It is probably not fit for any other purpose, and certainly not for production environments. In particular, its maintenance and development depend on the direction of future research. That being said, do not hesitate to submit issues or contact me by mail for questions and comments.
 
 ### Install & fastlearners
 
