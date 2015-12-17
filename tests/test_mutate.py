@@ -47,13 +47,13 @@ class TestDisturb(unittest.TestCase):
 
     def test_mutate(self):
         cfg = self._config()
-        cfg['operator.p_muate'] = 0.0
+        cfg['operator.p_mutate'] = 0.0
         learner = MutateNNLearner(cfg)
         learner.update({'x': random.uniform(0, 10),
                         'y': random.uniform(0, 10)},
                        {'a': random.uniform(0, 100)})
         e = learner.infer({'a': random.uniform(0, 100)})
-        
+
 
 if __name__ == '__main__':
     unittest.main()

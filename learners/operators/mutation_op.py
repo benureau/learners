@@ -21,8 +21,10 @@ def get(name):
     return _mutators[name]
 
 
-defcfg = scicfg.SciConfig()
+defcfg = scicfg.SciConfig(strict=True)
 defcfg._describe('classname', instanceof=str)
+defcfg._freeze(True)
+
 
 class MutationOperator(object):
 
@@ -43,7 +45,7 @@ ro_cfg._describe('name', instanceof=str, default='uniform',
                  docstring='Name of the operator.')
 ro_cfg._describe('d', instanceof=(numbers.Real, collections.Iterable), default=0.05,
                  docstring='Perturbation factor for the mutation.')
-ro_cfg._describe('proba', instanceof=(numbers.Real, collections.Iterable), default=1.0,
+ro_cfg._describe('p_mutate', instanceof=(numbers.Real, collections.Iterable), default=1.0,
                  docstring='Probability of a mutation.')
 ro_cfg._describe('relative', instanceof=bool, default=True,
                  docstring='If True, d is considered relative to the bounds of the vector channels.')
@@ -61,18 +63,19 @@ class UniformOperator(MutationOperator):
         self.d = self.cfg.d
         if isinstance(self.d, numbers.Real):
             self.d = tuple(self.d for c in self.channels)
-        self.proba = self.cfg.proba
-        if isinstance(self.proba, numbers.Real):
-            self.proba = tuple(self.proba for c in self.channels)
+        self.p_mutate = self.cfg.p_mutate
+        if isinstance(self.p_mutate, numbers.Real):
+            self.p_mutate = tuple(self.p_mutate for c in self.channels)
 
     def mutate(self, vector):
         """Return a perturbation of a motor vector"""
         # we draw the perturbation inside legal values, rather than clamp it afterward
         mutated = []
-        for v_i, p_i, d_i, c_i in zip(vector, self.proba, self.d, self.channels):
-            if p_i < random.random():
-                mutated.append(mutate_vi(v_i, d_i, c_i))
-            mutated.append(v_i)
+        for v_i, p_i, d_i, c_i in zip(vector, self.p_mutate, self.d, self.channels):
+            if random.random() < p_i:
+                mutated.append(self.mutate_vi(v_i, d_i, c_i))
+            else:
+                mutated.append(v_i)
         return mutated
 
     def mutate_vi(self, v_i, d_i, c_i):
@@ -112,7 +115,7 @@ class UniformSyncOperator(UniformOperator):
         # we draw the perturbation inside legal values, rather than clamp it afterward
         mutated = []
 
-        for v_i, p_i, d_i, c_i in zip(vector, self.proba, self.d, self.channels):
+        for v_i, p_i, d_i, c_i in zip(vector, self.p_mutate, self.d, self.channels):
             if p_i < random.random():
                 mutated.append(mutate_vi(v_i, d_i, c_i))
             mutated.append(v_i)
