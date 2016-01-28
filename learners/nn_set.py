@@ -4,8 +4,6 @@ from __future__ import absolute_import, division
 import numpy as np
 import sklearn.neighbors
 
-import warnings
-warnings.filterwarnings('error')
 
 class BruteForceNNSet(object):
     """\
