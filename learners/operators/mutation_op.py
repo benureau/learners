@@ -72,7 +72,7 @@ class UniformOperator(MutationOperator):
         # we draw the perturbation inside legal values, rather than clamp it afterward
         mutated = []
         for v_i, p_i, d_i, c_i in zip(vector, self.p_mutate, self.d, self.channels):
-            if random.random() < p_i:
+            if p_i == 1.0 or random.random() < p_i:
                 mutated.append(self.mutate_vi(v_i, d_i, c_i))
             else:
                 mutated.append(v_i)
