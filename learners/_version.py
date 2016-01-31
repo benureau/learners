@@ -37,7 +37,7 @@ def get_config():
     cfg.VCS = "git"
     cfg.style = "git-describe-long"
     cfg.tag_prefix = ""
-    cfg.parentdir_prefix = "None"
+    cfg.parentdir_prefix = ""
     cfg.versionfile_source = "learners/_version.py"
     cfg.verbose = False
     return cfg
@@ -66,8 +66,9 @@ def run_command(commands, args, cwd=None, verbose=False, hide_stderr=False):
     for c in commands:
         try:
             dispcmd = str([c] + args)
-            # remember shell=False, so use git.cmd on windows, not just git
-            p = subprocess.Popen([c] + args, cwd=cwd, stdout=subprocess.PIPE,
+            # shell=True because with 3.4.4, does not always work with shell=False
+            p = subprocess.Popen(' '.join([c] + args), shell=True, cwd=cwd,
+                                 stdout=subprocess.PIPE,
                                  stderr=(subprocess.PIPE if hide_stderr
                                          else None))
             break
