@@ -114,12 +114,6 @@ class LWLRLearner(nn.NNLearner):
         X   = np.array([np.append([1.0], self.nnset.xs[i]) for i in index])
         Y   = np.array([self.nnset.ys[i] for i in index])
 
-        # from tools import gfx
-        # samples = [(d_i, w_i, tuple(self.dataset.get_x(i)), tuple(self.dataset.get_y(i))) for d_i, i, w_i in zip(dists, index, w)]
-        # for d_i, w_i, x_i, y_i in sorted(samples):
-        #     print('{}{:7.5f}/{:7.5f}:  {} -> {}{}'.format(gfx.cyan, d_i, w_i, gfx.ppv(x_i, fmt=' 5.2f'), gfx.ppv(y_i, fmt=' 5.2f'), gfx.end))
-        # print('')
-
         W   = np.diag(w)
         WX  = np.dot(W, X)
         WXT = WX.T
