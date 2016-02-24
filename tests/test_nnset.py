@@ -38,8 +38,9 @@ class TestNNSet(unittest.TestCase):
             implementations = [BruteForceNNSet(), BatchNNSet(), NNSet(poolsize=7)]
 
             innset = BatchNNSet()
-            n = random.randint(1, 5)
-            m = random.randint(1, 5)
+            n = random.randint(2, 5)
+            m = random.randint(2, 5)
+
             for j in range(100):
                 x, y = [random.random() for _ in range(n)], [random.random() for _ in range(m)]
                 for imp in implementations:
@@ -52,10 +53,6 @@ class TestNNSet(unittest.TestCase):
                     for imp in implementations:
                         dists, idxes = imp.nn_x(x, k=k)
                         indexes.append(idxes)
-                    # for i in range(len(indexes)-1):
-                    #     for a, b in zip(indexes[i], indexes[i+1]):
-                    #         self.assertEqual(a, b.all())
-
                     self.assertEqual(*indexes)
 
 if __name__ == '__main__':

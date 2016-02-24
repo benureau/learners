@@ -99,7 +99,7 @@ class BatchNNSet(BruteForceNNSet):
         self._check_obs(obs)
 
         for i, obs_i in enumerate(obs):
-            self._data[i].append(np.array(obs_i).reshape(1, -1))
+            self._data[i].append(np.array(obs_i))
         self._nn_ready = [False]*len(self.shape)
 
     def _nn(self, side, v, k=1):
@@ -109,6 +109,7 @@ class BatchNNSet(BruteForceNNSet):
             :return:    distance and indexes of found nearest neighbors.
         """
         self._update_tree(side)
+        v = np.array(v).reshape(1, -1)
         dists, idxes = self._nn_tree[side].kneighbors(v, n_neighbors=k)
         return np.array(dists[0]), tuple(idxes[0])
 
