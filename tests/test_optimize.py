@@ -7,6 +7,7 @@ import dotdot
 import learners
 from learners import tools
 
+
 random.seed(0)
 np.random.seed(0)
 
@@ -28,13 +29,13 @@ class TestOptimize(unittest.TestCase):
 
         learner = learners.OptimizeLearner(cfg)
 
-        for i in range(10):
+        for _ in range(10):
             x = np.random.rand(1)
             y = f(x)
             learner.update(tools.to_signal(x, cfg['m_channels']),
                            tools.to_signal(y, cfg['s_channels']))
 
-        for i in range(10):
+        for _ in range(10):
             y = np.random.rand(1).ravel()
             xp = learner.infer(tools.to_signal(y, cfg['s_channels']))
             xp = np.array(tools.to_vector(xp, cfg['m_channels']))
@@ -45,7 +46,7 @@ class TestOptimize(unittest.TestCase):
         """Test LWLR on random linear models of dimensions from 1 to 20.
          It should return exact results, give of take floating point imprecisions."""
 
-        for i in range(20):
+        for _ in range(20):
             n = random.randint(1, 20)
             m = random.randint(1, 5)
             f = random_linear(n, m)
@@ -58,13 +59,13 @@ class TestOptimize(unittest.TestCase):
 
             learner = learners.OptimizeLearner(cfg)
 
-            for i in range(4*n):
+            for _ in range(4*n):
                 x = np.random.rand(n)
                 y = f(x)
                 learner.update(tools.to_signal(x, cfg['m_channels']),
                                tools.to_signal(y, cfg['s_channels']))
 
-            for i in range(10):
+            for _ in range(10):
                 x = np.random.rand(n).ravel()
                 y = f(x)
                 xp = learner.infer(tools.to_signal(y, cfg['s_channels']))

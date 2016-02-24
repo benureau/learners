@@ -29,13 +29,13 @@ class TestLWLR(unittest.TestCase):
 
         for learner in [learners.LWLRLearner(cfg), learners.ESLWLRLearner(cfg)]:
 
-            for i in range(10):
+            for _ in range(10):
                 x = np.random.rand(1)
                 y = f(x)
                 learner.update(tools.to_signal(x, cfg['m_channels']),
                                tools.to_signal(y, cfg['s_channels']))
 
-            for i in range(10):
+            for _ in range(10):
                 x = np.random.rand(1).ravel()
                 y = f(x)
                 yp = learner.predict(tools.to_signal(x, cfg['m_channels']))
@@ -53,7 +53,7 @@ class TestLWLR(unittest.TestCase):
             else:
                 learners.disable_fastlearners()
 
-            for i in range(20):
+            for _ in range(20):
                 n = random.randint(1, 20)
                 m = random.randint(1, 5)
                 f = random_linear(n, m)
@@ -66,13 +66,13 @@ class TestLWLR(unittest.TestCase):
 
                 for learner in [learners.LWLRLearner(cfg), learners.ESLWLRLearner(cfg)]:
 
-                    for i in range(2*n):
+                    for _ in range(2*n):
                         x = np.random.rand(n)
                         y = f(x)
                         learner.update(tools.to_signal(x, cfg['m_channels']),
                                        tools.to_signal(y, cfg['s_channels']))
 
-                    for i in range(10):
+                    for _ in range(10):
                         x = np.random.rand(n).ravel()
                         y = f(x)
                         yp = learner.predict(tools.to_signal(x, cfg['m_channels']))

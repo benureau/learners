@@ -1,7 +1,4 @@
 from __future__ import absolute_import, division, print_function
-import random
-import numbers
-import collections
 
 from .. import tools
 from . import nn

@@ -1,7 +1,5 @@
 from __future__ import absolute_import, division, print_function
 
-import scicfg
-
 from .. import learner
 from .. import nn
 

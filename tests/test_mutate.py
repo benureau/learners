@@ -1,12 +1,8 @@
 from __future__ import absolute_import, division, print_function
 import unittest
 import random
-import copy
-
-import scicfg
 
 import dotdot
-import learners
 from learners import Channel
 from learners import MutateNNLearner
 
@@ -49,10 +45,9 @@ class TestDisturb(unittest.TestCase):
         cfg = self._config()
         cfg['operator.p_mutate'] = 0.0
         learner = MutateNNLearner(cfg)
-        learner.update({'x': random.uniform(0, 10),
-                        'y': random.uniform(0, 10)},
-                       {'a': random.uniform(0, 100)})
+        learner.update({'x': 5, 'y': 4}, {'a': 9})
         e = learner.infer({'a': random.uniform(0, 100)})
+        self.assertTrue(e['x'] == 5.0 and e['y'] == 4.0)
 
 
 if __name__ == '__main__':

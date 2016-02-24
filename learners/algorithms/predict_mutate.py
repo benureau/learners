@@ -1,5 +1,4 @@
 from __future__ import absolute_import, division, print_function
-import random
 import numbers
 
 from .. import tools
@@ -34,7 +33,7 @@ class PredictMutateNNLearner(mutate_nn.MutateNNLearner):
         s_vector = tools.to_vector(s_signal, self.s_channels)
         m_best  = None
 
-        for i in range(self.cfg.attempts):
+        for _ in range(self.cfg.attempts):
             m_signal = super(PredictMutateNNLearner, self)._infer(s_signal)
             s_pred   = self.fwd.predict(m_signal)
             s_pred_v = tools.to_vector(s_pred, self.s_channels)

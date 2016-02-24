@@ -2,10 +2,7 @@ from __future__ import absolute_import, division, print_function
 import unittest
 import random
 
-import scicfg
-
 import dotdot
-import learners
 from learners import Channel
 from learners import PredictMutateNNLearner
 

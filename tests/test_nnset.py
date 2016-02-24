@@ -2,8 +2,6 @@ from __future__ import absolute_import, division, print_function
 import unittest
 import random
 
-import scicfg
-
 import dotdot
 from learners.nn_set import NNSet, BatchNNSet, BruteForceNNSet
 
@@ -34,10 +32,9 @@ class TestNNSet(unittest.TestCase):
 
     def test_incrementalnn(self):
 
-        for i in range(10):
+        for _ in range(10):
             implementations = [BruteForceNNSet(), BatchNNSet(), NNSet(poolsize=7)]
 
-            innset = BatchNNSet()
             n = random.randint(2, 5)
             m = random.randint(2, 5)
 
