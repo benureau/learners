@@ -35,8 +35,8 @@ class TestDisturb(unittest.TestCase):
         self.assertEqual(p, None)
 
         e = learner.infer({'a': 3})
-        self.assertTrue(4.9 <= e['x'] <= 5.1 and
-                        3.9 <= e['y'] <= 4.1)
+        self.assertTrue(4.8 <= e['x'] <= 5.2 and
+                        3.8 <= e['y'] <= 4.2)
 
     def test_mutate(self):
         for name in ['uniform', 'uniformclamp', 'uniformsync', 'gauss']:
@@ -45,7 +45,7 @@ class TestDisturb(unittest.TestCase):
             learner = MutateNNLearner(cfg)
             self._learner_check(learner)
 
-    def test_mutate(self):
+    def test_mutate2(self):
         cfg = self._config()
         cfg['operator.p_mutate'] = 0.0
         learner = MutateNNLearner(cfg)

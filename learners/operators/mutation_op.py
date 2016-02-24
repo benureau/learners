@@ -36,7 +36,7 @@ class MutationOperator(object):
 
     def mutate(self, vector):
         """Create a mutation of the vector v"""
-        raise NotImplemented
+        raise NotImplementedError
 
 
 ro_cfg = defcfg._deepcopy()
@@ -132,6 +132,6 @@ class GaussOperator(UniformOperator):
     defcfg = gauss_cfg
     def mutate_vi(self, v_i, d_i, c_i):
         m_i = random.gauss(v_i, d_i)
-        return min(c_i.bounds[1], max(c_i.bounds[0], vm_i))
+        return min(c_i.bounds[1], max(c_i.bounds[0], m_i))
 
 register('gauss', GaussOperator)
